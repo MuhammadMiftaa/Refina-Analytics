@@ -57,8 +57,15 @@ type getUserFinancialSummaryType = {
   range?: { start: Date; end: Date };
 };
 
-type getUserNetWorthComposition = {
+type getUserNetWorthCompositionType = {
   userID: string;
 };
 
-export type { getUserTransactionType, getUserBalanceType, getUserFinancialSummaryType, getUserNetWorthComposition, month, day };
+export type {
+  getUserTransactionType,
+  getUserBalanceType,
+  getUserFinancialSummaryType,
+  getUserNetWorthCompositionType,
+  month,
+  day,
+};

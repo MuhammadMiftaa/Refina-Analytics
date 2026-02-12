@@ -1,7 +1,7 @@
 import {
   getUserBalanceType,
   getUserFinancialSummaryType,
-  getUserNetWorthComposition,
+  getUserNetWorthCompositionType,
   getUserTransactionType,
 } from "./dto";
 import {
@@ -255,7 +255,6 @@ const getUserFinancialSummary = async (params: getUserFinancialSummaryType) => {
 
   //= WALLET FILTERING
   if (walletID) {
-    // If specific wallet: need to filter WalletSummaries array
     matchConditions["WalletSummaries.WalletID"] = walletID;
   }
 
@@ -264,104 +263,61 @@ const getUserFinancialSummary = async (params: getUserFinancialSummaryType) => {
     matchConditions.PeriodStart = { $gte: range.start };
     matchConditions.PeriodEnd = { $lte: range.end };
   }
-  // If no range = ALL TIME (no date filter)
 
-  //= QUERY WITH OPTIONAL WALLET FILTERING IN PROJECTION
-  let result;
+  //= BASE PROJECTION (shared fields)
+  const baseProjection: Record<string, number | object> = {
+    _id: 0,
+    UserID: 1,
+    PeriodType: 1,
+    PeriodKey: 1,
+    PeriodStart: 1,
+    PeriodEnd: 1,
+    IncomeNow: 1,
+    ExpenseNow: 1,
+    ProfitNow: 1,
+    BalanceNow: 1,
+    IncomePrev: 1,
+    ExpensePrev: 1,
+    ProfitPrev: 1,
+    BalancePrev: 1,
+    IncomeGrowthPct: 1,
+    ExpenseGrowthPct: 1,
+    ProfitGrowthPct: 1,
+    BalanceGrowthPct: 1,
+    SavingsRate: 1,
+    ExpenseToIncomeRatio: 1,
+    BurnRateDaily: 1,
+    AvgIncomeDaily: 1,
+    AvgExpenseDaily: 1,
+    RunwayDays: 1,
+    TotalTransactions: 1,
+    IncomeTransactionCount: 1,
+    ExpenseTransactionCount: 1,
+    AvgTransactionAmount: 1,
+    LargestIncome: 1,
+    LargestExpense: 1,
+    InvestmentSummary: 1,
+    NetWorth: 1,
+    TopExpenseCategories: 1,
+    TopIncomeCategories: 1,
+  };
 
-  if (walletID) {
-    // Specific wallet: filter WalletSummaries array
-    result = await userFinancialSummariesModel
-      .find(matchConditions, {
-        _id: 0,
-        UserID: 1,
-        PeriodType: 1,
-        PeriodKey: 1,
-        PeriodStart: 1,
-        PeriodEnd: 1,
-        IncomeNow: 1,
-        ExpenseNow: 1,
-        ProfitNow: 1,
-        BalanceNow: 1,
-        IncomePrev: 1,
-        ExpensePrev: 1,
-        ProfitPrev: 1,
-        BalancePrev: 1,
-        IncomeGrowthPct: 1,
-        ExpenseGrowthPct: 1,
-        ProfitGrowthPct: 1,
-        BalanceGrowthPct: 1,
-        SavingsRate: 1,
-        ExpenseToIncomeRatio: 1,
-        BurnRateDaily: 1,
-        AvgIncomeDaily: 1,
-        AvgExpenseDaily: 1,
-        RunwayDays: 1,
-        TotalTransactions: 1,
-        IncomeTransactionCount: 1,
-        ExpenseTransactionCount: 1,
-        AvgTransactionAmount: 1,
-        LargestIncome: 1,
-        LargestExpense: 1,
-        InvestmentSummary: 1,
-        NetWorth: 1,
-        TopExpenseCategories: 1,
-        TopIncomeCategories: 1,
-        WalletSummaries: {
-          $elemMatch: { WalletID: walletID },
-        },
-      })
-      .sort({ PeriodStart: 1 })
-      .lean();
-  } else {
-    // All wallets: return all data
-    result = await userFinancialSummariesModel
-      .find(matchConditions, {
-        _id: 0,
-        UserID: 1,
-        PeriodType: 1,
-        PeriodKey: 1,
-        PeriodStart: 1,
-        PeriodEnd: 1,
-        IncomeNow: 1,
-        ExpenseNow: 1,
-        ProfitNow: 1,
-        BalanceNow: 1,
-        IncomePrev: 1,
-        ExpensePrev: 1,
-        ProfitPrev: 1,
-        BalancePrev: 1,
-        IncomeGrowthPct: 1,
-        ExpenseGrowthPct: 1,
-        ProfitGrowthPct: 1,
-        BalanceGrowthPct: 1,
-        SavingsRate: 1,
-        ExpenseToIncomeRatio: 1,
-        BurnRateDaily: 1,
-        AvgIncomeDaily: 1,
-        AvgExpenseDaily: 1,
-        RunwayDays: 1,
-        TotalTransactions: 1,
-        IncomeTransactionCount: 1,
-        ExpenseTransactionCount: 1,
-        AvgTransactionAmount: 1,
-        LargestIncome: 1,
-        LargestExpense: 1,
-        InvestmentSummary: 1,
-        NetWorth: 1,
-        TopExpenseCategories: 1,
-        TopIncomeCategories: 1,
-        WalletSummaries: 1,
-      })
-      .sort({ PeriodStart: 1 })
-      .lean();
-  }
+  // WalletSummaries: filter by specific wallet or return all
+  const projection = {
+    ...baseProjection,
+    WalletSummaries: walletID ? { $elemMatch: { WalletID: walletID } } : 1,
+  };
+
+  const result = await userFinancialSummariesModel
+    .find(matchConditions, projection)
+    .sort({ PeriodStart: 1 })
+    .lean();
 
   return result;
 };
 
 const getUserNetWorthComposition = async (
-  params: getUserNetWorthComposition,
+  params: getUserNetWorthCompositionType,
 ) => {
   const { userID } = params;
 
