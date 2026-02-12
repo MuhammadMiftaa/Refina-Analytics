@@ -1,0 +1,11 @@
+Get Total Transaction per Category
+-> By Exact Date & Wallet
+-> By Year & Wallet
+-> By Year & Month & Wallet
+-> By Year, Month, & Day & Wallet
+-> By Range & Wallet
+-> By Exact Date
+-> By Year
+-> By Year & Month
+-> By Year, Month, & Day
+-> By Range
