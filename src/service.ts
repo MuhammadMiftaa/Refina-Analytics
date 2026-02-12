@@ -341,7 +341,7 @@ const getUserNetWorthComposition = async (
   return result;
 };
 
-export {
+export default {
   getUserTransaction,
   getUserBalance,
   getUserFinancialSummary,
