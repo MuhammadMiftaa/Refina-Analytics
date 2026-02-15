@@ -9,6 +9,7 @@ import handler from "./handler";
 import { GRPCClient } from "./grpc/client/client";
 import { WalletGRPCClient } from "./grpc/client/wallet";
 import { TransactionGRPCClient } from "./grpc/client/transaction";
+import { InvestmentGRPCClient } from "./grpc/client/investment";
 
 connect(env.DATABASE_URL)
   .then(() => {
@@ -21,9 +22,10 @@ connect(env.DATABASE_URL)
 
 const app = express();
 
-const grpcClient = new GRPCClient(env.WALLET_ADDRESS, env.TRANSACTION_ADDRESS);
+const grpcClient = new GRPCClient(env.WALLET_ADDRESS, env.TRANSACTION_ADDRESS, env.INVESTMENT_ADDRESS);
 app.locals.walletGRPCClient = new WalletGRPCClient(grpcClient);
 app.locals.transactionGRPCClient = new TransactionGRPCClient(grpcClient);
+app.locals.investmentGRPCClient = new InvestmentGRPCClient(grpcClient);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

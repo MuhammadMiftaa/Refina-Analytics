@@ -4,6 +4,7 @@ import {
   getUserFinancialSummaryType,
   getUserNetWorthCompositionType,
   getUserTransactionType,
+  investmentType,
   transactionType,
   walletType,
 } from "./dto";
@@ -82,8 +83,9 @@ const initialSyncHandler = async (
 
     const wallets = await req.app.locals.walletGRPCClient.getWallets() as Promise<walletType[]>;
     const transactions = await req.app.locals.transactionGRPCClient.getTransactions() as Promise<transactionType[]>;
+    const investments = await req.app.locals.investmentGRPCClient.getInvestments() as Promise<investmentType[]>;
 
-    res.json({ wallets, transactions });
+    res.json({ wallets, transactions, investments });
 
   } catch (error) {
     next(error);
