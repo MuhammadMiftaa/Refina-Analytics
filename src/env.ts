@@ -36,6 +36,10 @@ const env = {
   DATABASE_URL: required("DATABASE_URL"),
   JWT_SECRET: required("JWT_SECRET"),
   LOG_LEVEL: required("LOG_LEVEL"),
+  INITIAL_SYNC_KEY: required("INITIAL_SYNC_KEY"),
+  WALLET_ADDRESS: required("WALLET_ADDRESS"),
+  TRANSACTION_ADDRESS: required("TRANSACTION_ADDRESS"),
+  INVESTMENT_ADDRESS: required("INVESTMENT_ADDRESS"),
 };
 
 //$ Exit if any env is missing

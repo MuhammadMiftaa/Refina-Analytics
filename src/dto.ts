@@ -94,6 +94,37 @@ export const getUserNetWorthCompositionSchema = z.object({
   userID: z.string(),
 });
 
+export const initialSyncSchema = z.object({
+  secretKey: z.string().min(1, "Secret key is required"),
+  userID: z.string().optional(),
+});
+
+export const walletSchema = z.object({
+  id: z.uuid(),
+  user_id: z.uuid(),
+  name: z.string(),
+  number: z.string(),
+  balance: z.number().min(0),
+  wallet_type_id: z.uuid(),
+  wallet_type: z.string(),
+  wallet_type_name: z.string(),
+  created_at: z.date(),
+  updated_at: z.date(),
+});
+
+export const transactionSchema = z.object({
+  id: z.uuid(),
+  wallet_id: z.uuid(),
+  amount: z.number().min(0),
+  category_id: z.uuid(),
+  category_name: z.string(),
+  category_type: z.string(),
+  transaction_date: z.date(),
+  description: z.string(),
+  created_at: z.date(),
+  updated_at: z.date(),
+});
+
 //$ Infer types from schemas
 export type getUserTransactionType = z.infer<typeof getUserTransactionSchema>;
 export type getUserBalanceType = z.infer<typeof getUserBalanceSchema>;
@@ -103,5 +134,8 @@ export type getUserFinancialSummaryType = z.infer<
 export type getUserNetWorthCompositionType = z.infer<
   typeof getUserNetWorthCompositionSchema
 >;
+export type initialSyncType = z.infer<typeof initialSyncSchema>;
 export type month = z.infer<typeof monthSchema>;
 export type day = z.infer<typeof daySchema>;
+export type walletType = z.infer<typeof walletSchema>;
+export type transactionType = z.infer<typeof transactionSchema>;

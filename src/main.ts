@@ -5,10 +5,25 @@ import logger from "./logger";
 import middleware from "./middleware";
 import route from "./route";
 import { connect } from "mongoose";
+import handler from "./handler";
+import { GRPCClient } from "./grpc/client/client";
+import { WalletGRPCClient } from "./grpc/client/wallet";
+import { TransactionGRPCClient } from "./grpc/client/transaction";
 
-connect(env.DATABASE_URL);
+connect(env.DATABASE_URL)
+  .then(() => {
+    logger.info("Connected to MongoDB");
+  })
+  .catch((error) => {
+    logger.error("MongoDB connection failed", { error: error.message });
+    process.exit(1);
+  });
 
 const app = express();
+
+const grpcClient = new GRPCClient(env.WALLET_ADDRESS, env.TRANSACTION_ADDRESS);
+app.locals.walletGRPCClient = new WalletGRPCClient(grpcClient);
+app.locals.transactionGRPCClient = new TransactionGRPCClient(grpcClient);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +32,8 @@ app.use(middleware.requestLogger);
 app.get("/test", (req: Request, res: Response) => {
   res.json({ message: "Hello World" });
 });
+
+app.post("/analytics/initial-sync", handler.initialSyncHandler);
 
 app.use("/analytics", route);
 

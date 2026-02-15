@@ -4,8 +4,13 @@ import {
   getUserFinancialSummaryType,
   getUserNetWorthCompositionType,
   getUserTransactionType,
+  transactionType,
+  walletType,
 } from "./dto";
 import service from "./service";
+import helper from "./helper";
+import env from "./env";
+import { ForbiddenError } from "./errors";
 
 const getUserTransaction = async (
   req: Request,
@@ -64,9 +69,31 @@ const getUserNetWorthComposition = async (
   }
 };
 
+const initialSyncHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const secretKey = req.body.secretKey;
+    if (secretKey !== env.INITIAL_SYNC_KEY) {
+      throw new ForbiddenError("Invalid secret key");
+    }
+
+    const wallets = await req.app.locals.walletGRPCClient.getWallets() as Promise<walletType[]>;
+    const transactions = await req.app.locals.transactionGRPCClient.getTransactions() as Promise<transactionType[]>;
+
+    res.json({ wallets, transactions });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getUserTransaction,
   getUserBalance,
   getUserFinancialSummary,
   getUserNetWorthComposition,
+  initialSyncHandler,
 };
