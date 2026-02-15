@@ -12,6 +12,8 @@ import service from "./service";
 import helper from "./helper";
 import env from "./env";
 import { ForbiddenError } from "./errors";
+import { initialSync } from "./initial-sync";
+import logger from "./logger";
 
 const getUserTransaction = async (
   req: Request,
@@ -81,12 +83,22 @@ const initialSyncHandler = async (
       throw new ForbiddenError("Invalid secret key");
     }
 
-    const wallets = await req.app.locals.walletGRPCClient.getWallets() as Promise<walletType[]>;
-    const transactions = await req.app.locals.transactionGRPCClient.getTransactions() as Promise<transactionType[]>;
-    const investments = await req.app.locals.investmentGRPCClient.getInvestments() as Promise<investmentType[]>;
+    const wallets =
+      (await req.app.locals.walletGRPCClient.getWallets()) as walletType[];
+    const transactions =
+      (await req.app.locals.transactionGRPCClient.getTransactions()) as transactionType[];
+    const investments =
+      (await req.app.locals.investmentGRPCClient.getInvestments()) as investmentType[];
 
-    res.json({ wallets, transactions, investments });
+    logger.info("Fetch data for initial sync successfully");
+    await initialSync(wallets, transactions, investments);
+    logger.info("Initial sync completed successfully");
 
+    res.json({
+      status: true,
+      statusCode: 200,
+      message: "Initial sync completed successfully",
+    });
   } catch (error) {
     next(error);
   }
