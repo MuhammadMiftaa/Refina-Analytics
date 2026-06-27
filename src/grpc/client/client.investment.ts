@@ -35,9 +35,9 @@ export class InvestmentGRPCClient {
           investments.push({
             id: response.getId(),
             code: response.getCode(),
-            userId: response.getUserid(),
+            userId: response.getUserId(),
             quantity: response.getQuantity(),
-            initialValuation: response.getInitialvaluation(),
+            initialValuation: response.getInitialValuation(),
             amount: response.getAmount(),
             date: response.getDate(),
             description: response.getDescription(),
@@ -48,11 +48,11 @@ export class InvestmentGRPCClient {
               toUSD: assetCode.getTousd(),
               toEUR: assetCode.getToeur(),
               toIDR: assetCode.getToidr(),
-              createdAt: assetCode.getCreatedat(),
-              updatedAt: assetCode.getUpdatedat(),
+              createdAt: assetCode.getCreatedAt(),
+              updatedAt: assetCode.getUpdatedAt(),
             },
-            createdAt: response.getCreatedat(),
-            updatedAt: response.getUpdatedat(),
+            createdAt: response.getCreatedAt(),
+            updatedAt: response.getUpdatedAt(),
           });
         }
       });
@@ -93,9 +93,9 @@ export class InvestmentGRPCClient {
           investments.push({
             id: response.getId(),
             code: response.getCode(),
-            userId: response.getUserid(),
+            userId: response.getUserId(),
             quantity: response.getQuantity(),
-            initialValuation: response.getInitialvaluation(),
+            initialValuation: response.getInitialValuation(),
             amount: response.getAmount(),
             date: response.getDate(),
             description: response.getDescription(),
@@ -106,11 +106,11 @@ export class InvestmentGRPCClient {
               toUSD: assetCode.getTousd(),
               toEUR: assetCode.getToeur(),
               toIDR: assetCode.getToidr(),
-              createdAt: assetCode.getCreatedat(),
-              updatedAt: assetCode.getUpdatedat(),
+              createdAt: assetCode.getCreatedAt(),
+              updatedAt: assetCode.getUpdatedAt(),
             },
-            createdAt: response.getCreatedat(),
-            updatedAt: response.getUpdatedat(),
+            createdAt: response.getCreatedAt(),
+            updatedAt: response.getUpdatedAt(),
           });
         }
       });
