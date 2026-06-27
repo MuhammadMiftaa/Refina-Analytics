@@ -30,7 +30,7 @@ export class InvestmentGRPCClient {
 
       call.on("data", (response) => {
         if (response) {
-          const assetCode = response.getAssetcode();
+          const assetCode = response.getAsset();
 
           investments.push({
             id: response.getId(),
@@ -88,7 +88,7 @@ export class InvestmentGRPCClient {
 
       call.on("data", (response) => {
         if (response) {
-          const assetCode = response.getAssetcode();
+          const assetCode = response.getAsset();
 
           investments.push({
             id: response.getId(),
