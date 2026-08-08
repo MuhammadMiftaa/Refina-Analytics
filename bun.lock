@@ -4,7 +4,7 @@
     "": {
       "name": "refina-analytics",
       "dependencies": {
-        "@muhammadmiftaa/refina-protobuf": "github:MuhammadMiftaa/Aurify-Protobuf#v1.13.0",
+        "@muhammadmiftaa/refina-protobuf": "github:MuhammadMiftaa/Aurify-Protobuf#v1.17.0",
         "amqp-connection-manager": "^5.0.0",
         "amqplib": "^0.10.9",
         "dotenv": "^17.2.4",
@@ -224,7 +224,7 @@
 
     "@mongodb-js/saslprep": ["@mongodb-js/saslprep@1.4.6", "", { "dependencies": { "sparse-bitfield": "^3.0.3" } }, "sha512-y+x3H1xBZd38n10NZF/rEBlvDOOMQ6LKUTHqr8R9VkJ+mmQOYtJFxIlkkK8fZrtOiL6VixbOBWMbZGBdal3Z1g=="],
 
-    "@muhammadmiftaa/refina-protobuf": ["@muhammadmiftaa/refina-protobuf@github:MuhammadMiftaa/Aurify-Protobuf#3b3f32d", { "dependencies": { "@grpc/grpc-js": "^1.14.3", "@grpc/proto-loader": "^0.8.0", "google-protobuf": "^4.0.1" } }, "MuhammadMiftaa-Aurify-Protobuf-3b3f32d"],
+    "@muhammadmiftaa/refina-protobuf": ["@muhammadmiftaa/refina-protobuf@github:MuhammadMiftaa/Aurify-Protobuf#9322e0c", { "dependencies": { "@grpc/grpc-js": "^1.14.3", "@grpc/proto-loader": "^0.8.0", "google-protobuf": "^4.0.1" } }, "Aurify-Org-Aurify-Protobuf-9322e0c"],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@0.2.12", "", { "dependencies": { "@emnapi/core": "^1.4.3", "@emnapi/runtime": "^1.4.3", "@tybys/wasm-util": "^0.10.0" } }, "sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ=="],
 
