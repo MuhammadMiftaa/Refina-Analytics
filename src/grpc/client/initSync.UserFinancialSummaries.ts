@@ -1,4 +1,5 @@
 import { investmentType, transactionType, walletType } from "../../utils/dto";
+import { isAssetWallet } from "../../utils/helper";
 
 // ─── Helper types ────────────────────────────────────────────
 
@@ -231,8 +232,11 @@ export function calculateFinancialSummaries(
 
       const profitNow = incomeNow - expenseNow;
 
-      // Balance from wallets used this month
-      const userWallets = wallets.filter((w) => monthData.wallets.has(w.id));
+      // Balance from wallets used this month. Liability wallets are skipped:
+      // their balance is a remaining credit limit, not money held.
+      const userWallets = wallets.filter(
+        (w) => monthData.wallets.has(w.id) && isAssetWallet(w),
+      );
       const balanceNow = userWallets.reduce((sum, w) => sum + w.balance, 0);
 
       // ── Previous month comparison ────────────────────────

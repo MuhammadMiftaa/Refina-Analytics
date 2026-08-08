@@ -46,6 +46,7 @@ export const initialSync = async (
                 WalletName: wallet.name,
                 WalletType: wallet.wallet_type,
                 WalletTypeName: wallet.wallet_type_name,
+                WalletTypeNature: wallet.wallet_type_nature ?? "asset",
                 Balance: wallet.balance,
                 Number: wallet.number,
                 IsActive: true,

@@ -1,4 +1,5 @@
 import { investmentType, walletType } from "../../utils/dto";
+import { isAssetWallet } from "../../utils/helper";
 
 export function calculateNetWorthCompositions(
   wallets: walletType[],
@@ -10,7 +11,10 @@ export function calculateNetWorthCompositions(
   const userWallets = new Map<string, walletType[]>();
   const userInvestments = new Map<string, investmentType[]>();
 
+  // Liability wallets hold a remaining credit limit rather than money owned, so
+  // they never contribute to net worth.
   wallets.forEach((w) => {
+    if (!isAssetWallet(w)) return;
     if (!userWallets.has(w.user_id)) {
       userWallets.set(w.user_id, []);
     }

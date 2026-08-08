@@ -234,6 +234,9 @@ const userWallet: Schema = new Schema({
   WalletName: { type: String, required: true },
   WalletType: String,
   WalletTypeName: String,
+  // "asset" holds money and counts towards net worth; "liability" is a credit
+  // line whose balance is the remaining limit and must be excluded from it.
+  WalletTypeNature: { type: String, default: "asset" },
   Balance: { type: Number, default: 0 },
   Currency: String,
   Icon: String,

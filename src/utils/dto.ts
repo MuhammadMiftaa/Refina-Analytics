@@ -126,6 +126,9 @@ export const walletSchema = z.object({
   wallet_type_id: z.uuid(),
   wallet_type: z.string(),
   wallet_type_name: z.string(),
+  // Optional so that events published before the wallet service gained the
+  // field still validate; absent means the wallet holds money.
+  wallet_type_nature: z.enum(["asset", "liability"]).optional(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
 });

@@ -39,6 +39,7 @@ export class WalletGRPCClient {
             wallet_type_id: response.getWalletTypeId(),
             wallet_type: response.getWalletType(),
             wallet_type_name: response.getWalletTypeName(),
+            wallet_type_nature: response.getWalletTypeNature() || "asset",
             created_at: response.getCreatedAt(),
             updated_at: response.getUpdatedAt(),
           });
@@ -91,6 +92,7 @@ export class WalletGRPCClient {
               wallet_type_id: w.getWalletTypeId(),
               wallet_type: w.getWalletType(),
               wallet_type_name: w.getWalletTypeName(),
+              wallet_type_nature: w.getWalletTypeNature() || "asset",
               created_at: w.getCreatedAt(),
               updated_at: w.getUpdatedAt(),
             }),

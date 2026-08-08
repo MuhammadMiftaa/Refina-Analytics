@@ -6,12 +6,16 @@ import {
   userTransactionModel,
   userWalletModel,
 } from "../../utils/model";
+import { ASSET_WALLET_FILTER } from "../../utils/helper";
 
 //= Recalculate and upsert UserNetWorthComposition for a user
 async function recalcNetWorth(userId: string) {
-  // Wallet portion
+  // Wallet portion. Liability wallets (credit cards, paylater) store their
+  // remaining credit limit in Balance, which is borrowing capacity rather than
+  // money owned, so they are excluded from net worth entirely. $ne also matches
+  // documents written before the field existed.
   const wallets = await userWalletModel
-    .find({ UserID: userId, IsActive: true })
+    .find({ UserID: userId, IsActive: true, WalletTypeNature: ASSET_WALLET_FILTER })
     .lean();
   const walletTotal = wallets.reduce(
     (sum: number, w: any) => sum + (w.Balance ?? 0),
@@ -157,9 +161,9 @@ async function recalcFinancialSummary(userId: string, txDate: Date) {
   const profitNow = incomeNow - expenseNow;
   const totalTransactions = incomeTransactionCount + expenseTransactionCount;
 
-  // Get wallet balances for this user
+  // Get wallet balances for this user, excluding credit lines
   const wallets = await userWalletModel
-    .find({ UserID: userId, IsActive: true })
+    .find({ UserID: userId, IsActive: true, WalletTypeNature: ASSET_WALLET_FILTER })
     .lean();
   const balanceNow = wallets.reduce(
     (sum: number, w: any) => sum + (w.Balance ?? 0),
